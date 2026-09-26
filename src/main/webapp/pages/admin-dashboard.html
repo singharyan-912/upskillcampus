@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — FoodieExpress</title>
+    <meta name="description" content="Platform-wide administration: view stats, users, restaurants, orders, and deliveries.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body class="dashboard-page">
+
+<!-- Navigation -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html">
+            <span class="logo-icon">🍕</span> FoodieExpress
+        </a>
+        <ul class="nav-links">
+            <li><span class="nav-link active">Admin Panel</span></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-user" style="display:flex; align-items:center; gap:0.5rem;">
+                <div class="nav-avatar" id="nav-avatar">A</div>
+                <span class="nav-user-name" id="nav-user-name">Admin</span>
+                <button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none; padding:0.25rem 0.5rem; font-size:0.75rem; margin-left:0.5rem;">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page -->
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-header-left">
+            <h1>🛡️ Admin Dashboard</h1>
+            <p id="dash-subtitle">Platform-wide overview and management.</p>
+        </div>
+        <div class="dashboard-header-right">
+            <button class="btn btn-primary btn-sm" id="btn-refresh-stats">↻ Refresh Stats</button>
+        </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-grid" id="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon">👤</div>
+            <div class="stat-card-value" id="stat-users">—</div>
+            <div class="stat-card-label">Total Users</div>
+        </div>
+        <div class="stat-card primary">
+            <div class="stat-card-icon">🏪</div>
+            <div class="stat-card-value" id="stat-restaurants">—</div>
+            <div class="stat-card-label">Restaurants</div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-card-icon">📦</div>
+            <div class="stat-card-value" id="stat-orders">—</div>
+            <div class="stat-card-label">Total Orders</div>
+        </div>
+        <div class="stat-card info">
+            <div class="stat-card-icon">🏍️</div>
+            <div class="stat-card-value" id="stat-deliveries">—</div>
+            <div class="stat-card-label">Deliveries</div>
+        </div>
+        <div class="stat-card" style="grid-column: span 1;">
+            <div class="stat-card-icon">💰</div>
+            <div class="stat-card-value" id="stat-revenue" style="font-size:1.4rem;">—</div>
+            <div class="stat-card-label">Total Revenue</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs" role="tablist">
+        <button class="dashboard-tab active" role="tab" data-tab="users"       id="tab-users">👤 Users</button>
+        <button class="dashboard-tab"         role="tab" data-tab="restaurants" id="tab-restaurants">🏪 Restaurants</button>
+        <button class="dashboard-tab"         role="tab" data-tab="orders"      id="tab-orders">📦 Orders</button>
+        <button class="dashboard-tab"         role="tab" data-tab="deliveries"  id="tab-deliveries">🏍️ Deliveries</button>
+    </div>
+
+    <!-- ── TAB: Users ── -->
+    <div class="tab-panel active" id="panel-users">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">All Users</span>
+                <input type="search" id="search-users" placeholder="Search by name or email…"
+                    style="padding:0.4rem 0.75rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.85rem; min-width:220px;">
+            </div>
+            <div class="section-card-body">
+                <div class="data-table-wrap">
+                    <table class="data-table" id="users-table" aria-label="Users table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-tbody">
+                            <tr><td colspan="5" class="dash-loading">⏳ Loading users…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Restaurants ── -->
+    <div class="tab-panel" id="panel-restaurants">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">All Restaurants</span>
+                <input type="search" id="search-restaurants" placeholder="Search by name or cuisine…"
+                    style="padding:0.4rem 0.75rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.85rem; min-width:220px;">
+            </div>
+            <div class="section-card-body">
+                <div class="data-table-wrap">
+                    <table class="data-table" id="restaurants-table" aria-label="Restaurants table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Owner</th>
+                                <th>Cuisine</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurants-tbody">
+                            <tr><td colspan="7" class="dash-loading">⏳ Loading restaurants…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Orders ── -->
+    <div class="tab-panel" id="panel-orders">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">All Orders</span>
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <input type="search" id="search-orders" placeholder="Search customer or restaurant…"
+                        style="padding:0.4rem 0.75rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.85rem; min-width:200px;">
+                    <select id="filter-order-status" style="padding:0.4rem 0.625rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.85rem;">
+                        <option value="">All Statuses</option>
+                        <option value="PLACED">Placed</option>
+                        <option value="CONFIRMED">Confirmed</option>
+                        <option value="PREPARING">Preparing</option>
+                        <option value="READY">Ready</option>
+                        <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+            <div class="section-card-body">
+                <div class="data-table-wrap">
+                    <table class="data-table" id="orders-table" aria-label="Orders table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Restaurant</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody">
+                            <tr><td colspan="7" class="dash-loading">⏳ Loading orders…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Deliveries ── -->
+    <div class="tab-panel" id="panel-deliveries">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">All Deliveries</span>
+                <input type="search" id="search-deliveries" placeholder="Search partner or restaurant…"
+                    style="padding:0.4rem 0.75rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.85rem; min-width:220px;">
+            </div>
+            <div class="section-card-body">
+                <div class="data-table-wrap">
+                    <table class="data-table" id="deliveries-table" aria-label="Deliveries table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Order #</th>
+                                <th>Partner</th>
+                                <th>Restaurant</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Assigned</th>
+                                <th>Delivered</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deliveries-tbody">
+                            <tr><td colspan="8" class="dash-loading">⏳ Loading deliveries…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /.dashboard-container -->
+
+<!-- Toast -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/admin-dashboard.js"></script>
+</body>
+</html>

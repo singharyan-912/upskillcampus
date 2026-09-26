@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — FoodieExpress</title>
+    <meta name="description" content="Review your order and confirm delivery details.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/customer.css">
+
+    <style>
+        /* ── Checkout-specific extras ── */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Cart items review table */
+        .review-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        .review-items-table thead th {
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            color: var(--color-text-muted);
+            font-weight: 600;
+            border-bottom: 2px solid var(--color-border-light);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .review-items-table tbody td {
+            padding: 0.875rem 0.75rem;
+            border-bottom: 1px solid var(--color-border-light);
+            vertical-align: middle;
+        }
+        .review-items-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .review-items-table .item-name {
+            font-weight: 600;
+            color: var(--color-secondary);
+        }
+        .review-items-table .item-subtotal {
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* Summary card */
+        .checkout-summary-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border-light);
+            position: sticky;
+            top: calc(var(--nav-height) + 1.5rem);
+        }
+        .summary-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 0.4rem 0;
+            color: var(--color-text-muted);
+        }
+        .summary-line.total {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--color-secondary);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            border-top: 2px solid var(--color-border);
+        }
+        .summary-line.total .amount {
+            color: var(--color-primary);
+            font-size: 1.4rem;
+        }
+
+        /* Payment radio cards */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+        .payment-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 1rem 0.75rem;
+            border: 2px solid var(--color-border);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: white;
+            text-align: center;
+        }
+        .payment-label:hover {
+            border-color: var(--color-primary-light);
+            background: var(--color-primary-bg);
+        }
+        .payment-option input:checked + .payment-label {
+            border-color: var(--color-primary);
+            background: var(--color-primary-bg);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+        }
+        .payment-icon { font-size: 1.75rem; }
+        .payment-name { font-size: 0.8rem; font-weight: 600; color: var(--color-text); }
+        .payment-desc { font-size: 0.7rem; color: var(--color-text-muted); }
+
+        /* Demo online panel */
+        .demo-panel {
+            background: var(--color-info-bg);
+            border: 1px solid rgba(9,132,227,0.25);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            color: var(--color-info);
+            display: none;
+        }
+        .demo-panel.visible { display: block; }
+        .demo-panel label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            cursor: pointer;
+            color: var(--color-text);
+            font-size: 0.85rem;
+        }
+        .demo-panel input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+        /* Place order button */
+        .place-order-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #FF6B35, #E55A26);
+            color: white;
+            border: none;
+            border-radius: 0.875rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(255,107,53,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+        }
+        .place-order-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+        }
+        .place-order-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success modal */
+        .success-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-modal-backdrop.visible {
+            display: flex;
+        }
+        .success-modal {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .success-confetti { font-size: 4rem; margin-bottom: 1rem; animation: float 3s ease-in-out infinite; }
+        .success-modal h2 { font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--color-secondary); }
+        .success-modal .order-id-badge {
+            display: inline-block;
+            background: var(--color-primary-bg);
+            color: var(--color-primary);
+            border-radius: 0.5rem;
+            padding: 0.3rem 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+        .success-modal p { font-size: 0.9rem; color: var(--color-text-muted); margin: 0.5rem 0; }
+        .success-modal .total-line {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 1rem 0;
+        }
+        .success-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Form section card */
+        .form-section-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border-light);
+            margin-bottom: 1.5rem;
+        }
+        .form-section-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Items section */
+        .items-section-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border-light);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .items-section-header {
+            background: var(--color-surface-alt);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .items-section-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .items-section-body { padding: 0 0.5rem; }
+
+        .error-box {
+            background: var(--color-error-bg);
+            border: 1px solid rgba(214,48,49,0.25);
+            color: var(--color-error);
+            border-radius: 0.625rem;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-grid { grid-template-columns: 1fr; }
+            .checkout-summary-card { position: static; }
+            .payment-options { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .payment-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- ── Navigation ── -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html"><span class="logo-icon">🍕</span> FoodieExpress</a>
+        <ul class="nav-links">
+            <li><a class="nav-link" href="../index.html">Home</a></li>
+            <li><a class="nav-link" href="restaurants.html">Restaurants</a></li>
+            <li><a class="nav-link" href="orders.html">My Orders</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-user" style="display:flex; align-items:center; gap:0.5rem;">
+                <div class="nav-avatar" id="nav-avatar">U</div>
+                <span id="nav-user-name">User</span>
+                <button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none; margin-left:0.5rem;">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Page ── -->
+<main class="page-content container" style="padding-top: calc(var(--nav-height) + 2rem);">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" style="margin-bottom:1.5rem; font-size:0.85rem;">
+        <span><a href="cart.html" style="color:var(--color-text-muted); text-decoration:none;">Cart</a></span>
+        <span style="margin:0 0.5rem; color:var(--color-text-light);">›</span>
+        <span style="color:var(--color-text); font-weight:600;">Checkout</span>
+    </nav>
+
+    <h1 class="page-title" style="margin-bottom:2rem;">Checkout</h1>
+
+    <!-- Loading State -->
+    <div id="checkout-loading" style="text-align:center; padding:3rem;">
+        <div style="font-size:2rem; margin-bottom:1rem; animation:float 2s ease-in-out infinite;">🛒</div>
+        <p style="color:var(--color-text-muted);">Loading your cart...</p>
+    </div>
+
+    <!-- Main Grid (hidden until cart loads) -->
+    <div class="checkout-grid" id="checkout-main" style="display:none;">
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <!-- 1. Items Review -->
+            <div class="items-section-card">
+                <div class="items-section-header">
+                    <h3>🛍️ Order Items</h3>
+                    <span id="checkout-restaurant-name" style="font-size:0.85rem; color:var(--color-text-muted);"></span>
+                </div>
+                <div class="items-section-body" id="checkout-items-body">
+                    <!-- Table injected by JS -->
+                </div>
+            </div>
+
+            <!-- 2. Delivery Address -->
+            <div class="form-section-card">
+                <h3>📍 Delivery Details</h3>
+                <div class="form-group">
+                    <label class="form-label" for="checkout-address">
+                        Delivery Address <span style="color:var(--color-error)">*</span>
+                    </label>
+                    <textarea class="form-input" id="checkout-address" rows="3"
+                              placeholder="Enter your full delivery address including flat/house number, street, area, city, PIN..."
+                              required aria-required="true"></textarea>
+                    <span class="form-hint">Your food will be delivered to this address.</span>
+                </div>
+            </div>
+
+            <!-- Error box -->
+            <div class="error-box" id="checkout-error-box">
+                <span>❌</span>
+                <span id="checkout-error-text">Something went wrong.</span>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Summary -->
+        <div class="checkout-summary-card">
+            <div class="summary-title">Order Summary</div>
+
+            <div id="checkout-summary-items">
+                <!-- Items summary injected by JS -->
+            </div>
+
+            <div class="summary-line">
+                <span>Subtotal</span>
+                <span id="summary-subtotal">₹0.00</span>
+            </div>
+            <div class="summary-line">
+                <span>Delivery Fee</span>
+                <span style="color:var(--color-success); font-weight:600;">Free 🎉</span>
+            </div>
+            <div class="summary-line total">
+                <span>Total</span>
+                <span class="amount" id="summary-total">₹0.00</span>
+            </div>
+
+            <button class="place-order-btn" id="place-order-btn">
+                🚀 Continue to Payment
+            </button>
+
+            <p style="font-size:0.75rem; color:var(--color-text-light); text-align:center; margin-top:1rem;">
+                By placing this order you agree to our Terms of Service.
+            </p>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ── Success Modal ── -->
+<div class="success-modal-backdrop" id="success-modal" role="dialog" aria-modal="true" aria-label="Order placed successfully">
+    <div class="success-modal">
+        <div class="success-confetti">🎉</div>
+        <h2>Order Placed!</h2>
+        <div class="order-id-badge" id="modal-order-id">Order #—</div>
+        <p id="modal-restaurant-name" style="margin-top:0.5rem;"></p>
+        <div class="total-line" id="modal-total">₹0.00</div>
+        <p id="modal-payment-status" style="font-size:0.8rem;"></p>
+        <p style="color:var(--color-text-muted); font-size:0.85rem;">
+            Your food is being prepared. You can track status in My Orders.
+        </p>
+        <div class="success-modal-actions">
+            <button id="modal-track-btn" class="btn btn-primary" style="width:100%;">📦 Track My Order</button>
+            <button id="modal-browse-btn" class="btn btn-outline" style="width:100%;">🍕 Order More Food</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/checkout.js"></script>
+</body>
+</html>

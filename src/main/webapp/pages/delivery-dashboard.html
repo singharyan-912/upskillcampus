@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dashboard — FoodieExpress</title>
+    <meta name="description" content="Manage your deliveries, accept new orders, and track your earnings as a FoodieExpress delivery partner.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body class="dashboard-page">
+
+<!-- Navigation -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html">
+            <span class="logo-icon">🍕</span> FoodieExpress
+        </a>
+        <ul class="nav-links">
+            <li><span class="nav-link active">Delivery Dashboard</span></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-user" style="display:flex; align-items:center; gap:0.5rem;">
+                <div class="nav-avatar" id="nav-avatar">D</div>
+                <span class="nav-user-name" id="nav-user-name">Partner</span>
+                <button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none; padding:0.25rem 0.5rem; font-size:0.75rem; margin-left:0.5rem;">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page -->
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-header-left">
+            <h1>🏍️ Delivery Dashboard</h1>
+            <p id="dash-subtitle">Pick up and deliver orders. Track your progress here.</p>
+        </div>
+        <div class="dashboard-header-right">
+            <button class="btn btn-primary btn-sm" id="btn-refresh-all">↻ Refresh</button>
+        </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon">📦</div>
+            <div class="stat-card-value" id="stat-total">—</div>
+            <div class="stat-card-label">Total Deliveries</div>
+        </div>
+        <div class="stat-card primary">
+            <div class="stat-card-icon">🔄</div>
+            <div class="stat-card-value" id="stat-active">—</div>
+            <div class="stat-card-label">Active</div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-card-icon">✅</div>
+            <div class="stat-card-value" id="stat-delivered">—</div>
+            <div class="stat-card-label">Delivered</div>
+        </div>
+        <div class="stat-card info">
+            <div class="stat-card-icon">🛎️</div>
+            <div class="stat-card-value" id="stat-available">—</div>
+            <div class="stat-card-label">Available to Assign</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs" role="tablist">
+        <button class="dashboard-tab active" role="tab" data-tab="mine"      id="tab-mine">📦 My Deliveries</button>
+        <button class="dashboard-tab"         role="tab" data-tab="available" id="tab-available">🛎️ Available Orders</button>
+    </div>
+
+    <!-- ── TAB: My Deliveries ── -->
+    <div class="tab-panel active" id="panel-mine">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">My Assigned Deliveries</span>
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <label style="font-size:0.8rem;color:var(--color-text-muted);">
+                        Filter:
+                        <select id="filter-status" style="margin-left:4px; padding:0.25rem 0.5rem; border:1.5px solid var(--color-border); border-radius:var(--radius-md); font-size:0.8rem;">
+                            <option value="">All</option>
+                            <option value="ASSIGNED">Assigned</option>
+                            <option value="PICKED_UP">Picked Up</option>
+                            <option value="DELIVERED">Delivered</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="section-card-body" id="mine-list">
+                <div class="dash-loading">⏳ Loading your deliveries…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Available Orders ── -->
+    <div class="tab-panel" id="panel-available">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">Ready Orders — Available to Accept</span>
+                <button class="btn btn-outline btn-sm" id="btn-refresh-available">↻ Refresh</button>
+            </div>
+            <div class="section-card-body" id="available-list">
+                <div class="dash-loading">⏳ Loading available orders…</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /.dashboard-container -->
+
+<!-- Toast -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/delivery-dashboard.js"></script>
+</body>
+</html>

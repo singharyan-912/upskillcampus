@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard — FoodieExpress</title>
+    <meta name="description" content="Manage your restaurant menus, view incoming orders, and update restaurant details.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body class="dashboard-page">
+
+<!-- Navigation -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html">
+            <span class="logo-icon">🍕</span> FoodieExpress
+        </a>
+        <ul class="nav-links">
+            <li><span class="nav-link active">Restaurant Dashboard</span></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="nav-user" style="display:flex; align-items:center; gap:0.5rem;">
+                <div class="nav-avatar" id="nav-avatar">R</div>
+                <span class="nav-user-name" id="nav-user-name">Owner</span>
+                <button class="btn btn-outline btn-sm" id="nav-logout-btn" style="display:none; padding:0.25rem 0.5rem; font-size:0.75rem; margin-left:0.5rem;">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page -->
+<div class="dashboard-container">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div class="dashboard-header-left">
+            <h1>🍽️ Restaurant Dashboard</h1>
+            <p id="dash-subtitle">Manage your menus and track incoming orders.</p>
+        </div>
+        <div class="dashboard-header-right">
+            <button class="btn btn-primary btn-sm" id="btn-add-item">＋ Add Menu Item</button>
+        </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stat-grid" id="stat-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon">🏪</div>
+            <div class="stat-card-value" id="stat-restaurants">—</div>
+            <div class="stat-card-label">My Restaurants</div>
+        </div>
+        <div class="stat-card primary">
+            <div class="stat-card-icon">🍱</div>
+            <div class="stat-card-value" id="stat-items">—</div>
+            <div class="stat-card-label">Menu Items</div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-card-icon">📦</div>
+            <div class="stat-card-value" id="stat-orders">—</div>
+            <div class="stat-card-label">Active Orders</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="dashboard-tabs" role="tablist">
+        <button class="dashboard-tab active" role="tab" data-tab="menu" id="tab-menu">🍱 Menu</button>
+        <button class="dashboard-tab" role="tab" data-tab="orders" id="tab-orders">📦 Orders</button>
+        <button class="dashboard-tab" role="tab" data-tab="info" id="tab-info">⚙️ Restaurant Info</button>
+    </div>
+
+    <!-- ── TAB: Menu ── -->
+    <div class="tab-panel active" id="panel-menu">
+        <!-- Restaurant selector -->
+        <div class="section-card" style="margin-bottom:1.25rem;">
+            <div class="section-card-body" style="padding:1rem 1.5rem;">
+                <div class="restaurant-selector">
+                    <label for="rest-select" style="font-size:0.875rem;font-weight:600;">Restaurant:</label>
+                    <select id="rest-select" aria-label="Select restaurant">
+                        <option value="">— Select a restaurant —</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu grid -->
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">Menu Items</span>
+                <div style="display:flex;gap:0.5rem;align-items:center;">
+                    <label style="font-size:0.8rem;color:var(--color-text-muted);">
+                        <input type="checkbox" id="show-unavailable" style="margin-right:4px;"> Show unavailable
+                    </label>
+                </div>
+            </div>
+            <div class="section-card-body">
+                <div id="menu-list" class="menu-grid">
+                    <div class="dash-empty">
+                        <span class="dash-empty-icon">🏪</span>
+                        <h3>Select a restaurant</h3>
+                        <p>Choose a restaurant above to manage its menu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Orders ── -->
+    <div class="tab-panel" id="panel-orders">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">Incoming Orders</span>
+                <button class="btn btn-outline btn-sm" id="btn-refresh-orders">↻ Refresh</button>
+            </div>
+            <div class="section-card-body" id="orders-list">
+                <div class="dash-loading">⏳ Loading orders…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TAB: Info ── -->
+    <div class="tab-panel" id="panel-info">
+        <div class="section-card">
+            <div class="section-card-header">
+                <span class="section-card-title">Restaurant Information</span>
+            </div>
+            <div class="section-card-body">
+                <div class="restaurant-selector" style="margin-bottom:1.25rem;">
+                    <label for="info-rest-select" style="font-size:0.875rem;font-weight:600;">Restaurant:</label>
+                    <select id="info-rest-select" aria-label="Select restaurant for info">
+                        <option value="">— Select —</option>
+                    </select>
+                </div>
+                <form id="restaurant-info-form" style="display:none; max-width:520px;">
+                    <div class="modal-form-group">
+                        <label for="info-name">Restaurant Name *</label>
+                        <input type="text" id="info-name" required>
+                    </div>
+                    <div class="modal-form-row">
+                        <div class="modal-form-group">
+                            <label for="info-phone">Phone *</label>
+                            <input type="tel" id="info-phone" required>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="info-cuisine">Cuisine Type *</label>
+                            <input type="text" id="info-cuisine" required>
+                        </div>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="info-address">Address *</label>
+                        <input type="text" id="info-address" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="info-status">Status</label>
+                        <select id="info-status">
+                            <option value="ACTIVE">Active</option>
+                            <option value="INACTIVE">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="dash-alert" id="info-alert"></div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+                <div id="info-placeholder" class="dash-empty">
+                    <span class="dash-empty-icon">⚙️</span>
+                    <h3>Select a restaurant</h3>
+                    <p>Choose a restaurant to edit its details.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /.dashboard-container -->
+
+<!-- Toast -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- ── Add / Edit Menu Item Modal ── -->
+<div class="dash-modal-overlay" id="item-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+    <div class="dash-modal">
+        <div class="dash-modal-header">
+            <span class="dash-modal-title" id="item-modal-title">Add Menu Item</span>
+            <button class="dash-modal-close" id="item-modal-close" aria-label="Close">✕</button>
+        </div>
+        <div class="dash-modal-body">
+            <form id="item-form" novalidate>
+                <input type="hidden" id="item-id">
+                <input type="hidden" id="item-rest-id">
+                <div class="modal-form-group">
+                    <label for="item-name">Item Name *</label>
+                    <input type="text" id="item-name" placeholder="e.g. Margherita Pizza" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="item-description">Description</label>
+                    <textarea id="item-description" placeholder="Short description…"></textarea>
+                </div>
+                <div class="modal-form-row">
+                    <div class="modal-form-group">
+                        <label for="item-category">Category *</label>
+                        <input type="text" id="item-category" placeholder="e.g. Pizza, Drinks" required>
+                    </div>
+                    <div class="modal-form-group">
+                        <label for="item-price">Price (₹) *</label>
+                        <input type="number" id="item-price" placeholder="0.00" min="0.01" step="0.01" required>
+                    </div>
+                </div>
+                <div class="modal-form-group">
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                        <input type="checkbox" id="item-available" checked>
+                        Available for ordering
+                    </label>
+                </div>
+                <div class="dash-alert" id="item-alert"></div>
+            </form>
+        </div>
+        <div class="dash-modal-footer">
+            <button class="btn btn-outline" id="item-cancel-btn">Cancel</button>
+            <button class="btn btn-primary" id="item-save-btn">Save Item</button>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/restaurant-dashboard.js"></script>
+</body>
+</html>

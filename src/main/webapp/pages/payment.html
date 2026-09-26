@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment — FoodieExpress</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/customer.css">
+
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border-light);
+        }
+        
+        .order-summary-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        /* Payment radio cards */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0; height: 0;
+        }
+        .payment-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            border: 2px solid var(--color-border);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: white;
+            text-align: center;
+        }
+        .payment-label:hover {
+            border-color: var(--color-primary-light);
+            background: var(--color-primary-bg);
+        }
+        .payment-option input:checked + .payment-label {
+            border-color: var(--color-primary);
+            background: var(--color-primary-bg);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+        }
+        .payment-icon { font-size: 2rem; }
+        .payment-name { font-size: 1rem; font-weight: 600; color: var(--color-text); }
+        .payment-desc { font-size: 0.8rem; color: var(--color-text-muted); }
+
+        /* Demo online panel */
+        .demo-panel {
+            background: var(--color-info-bg);
+            border: 1px solid rgba(9,132,227,0.25);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--color-info);
+            display: none;
+        }
+        .demo-panel.visible { display: block; }
+        .demo-panel label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            cursor: pointer;
+            color: var(--color-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .error-box {
+            background: var(--color-error-bg);
+            border: 1px solid rgba(214,48,49,0.25);
+            color: var(--color-error);
+            border-radius: 0.625rem;
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        /* Success modal */
+        .success-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-modal-backdrop.visible {
+            display: flex;
+        }
+        .success-modal {
+            background: white;
+            border-radius: 1.25rem;
+            padding: 2.5rem 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- Navigation -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html"><span class="logo-icon">🍕</span> FoodieExpress</a>
+    </div>
+</nav>
+
+<main class="page-content container" style="padding-top: calc(var(--nav-height) + 2rem);">
+
+    <div id="payment-loading" style="text-align:center; padding:3rem;">
+        <div style="font-size:2rem; margin-bottom:1rem; animation:float 2s ease-in-out infinite;">💳</div>
+        <p style="color:var(--color-text-muted);">Loading payment details...</p>
+    </div>
+
+    <div class="payment-container" id="payment-main" style="display:none;">
+        <div class="order-summary-header">
+            <h2 style="font-size: 1.25rem; color: var(--color-secondary); margin-bottom: 0.5rem;">Payment for Order #<span id="display-order-id"></span></h2>
+            <div style="font-size: 2rem; font-weight: 700; color: var(--color-primary);" id="display-order-total">₹0.00</div>
+        </div>
+
+        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Select Payment Method</h3>
+        
+        <div class="payment-options" role="radiogroup" aria-label="Payment method">
+            <div class="payment-option">
+                <input type="radio" name="payment-method" id="pay-online" value="ONLINE" checked>
+                <label class="payment-label" for="pay-online">
+                    <span class="payment-icon">💳</span>
+                    <span class="payment-name">Online Payment</span>
+                    <span class="payment-desc">UPI / Card (Demo)</span>
+                </label>
+            </div>
+            <div class="payment-option">
+                <input type="radio" name="payment-method" id="pay-cod" value="COD">
+                <label class="payment-label" for="pay-cod">
+                    <span class="payment-icon">💵</span>
+                    <span class="payment-name">Cash on Delivery</span>
+                    <span class="payment-desc">Pay when delivered</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="demo-panel visible" id="demo-panel">
+            <strong>ℹ️ Demo Mode</strong> — This is a simulated online payment.
+            No real transaction will occur.
+            <label>
+                <input type="checkbox" id="simulate-failure"> Simulate payment failure
+            </label>
+        </div>
+
+        <div id="cod-info" style="display:none; background:var(--color-success-bg); border:1px solid rgba(0,184,148,0.25); border-radius:0.75rem; padding:1rem 1.25rem; font-size:0.9rem; color:#008069; margin-bottom:1.5rem;">
+            <strong>✅ Cash on Delivery</strong> — Payment will be recorded as PENDING.
+            Please have the exact amount ready when your delivery partner arrives.
+        </div>
+
+        <div class="error-box" id="payment-error-box">
+            <span>❌</span>
+            <span id="payment-error-text">Something went wrong.</span>
+        </div>
+
+        <button class="btn btn-primary" id="process-payment-btn" style="width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 0.75rem;">
+            Pay Now
+        </button>
+    </div>
+
+</main>
+
+<!-- Success Modal -->
+<div class="success-modal-backdrop" id="success-modal" role="dialog" aria-modal="true">
+    <div class="success-modal">
+        <div style="font-size: 4rem; margin-bottom: 1rem; animation: float 3s ease-in-out infinite;">🎉</div>
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--color-secondary);" id="modal-title">Payment Successful!</h2>
+        <div style="display: inline-block; background: var(--color-primary-bg); color: var(--color-primary); border-radius: 0.5rem; padding: 0.3rem 1rem; font-weight: 700; font-size: 1rem; margin: 0.5rem 0;" id="modal-order-id">Order #—</div>
+        <p id="modal-payment-msg" style="color:var(--color-text-muted); font-size:0.95rem; margin-top: 0.5rem;"></p>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+            <button id="modal-track-btn" class="btn btn-primary" style="width:100%;">Track My Order</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/payment.js"></script>
+</body>
+</html>

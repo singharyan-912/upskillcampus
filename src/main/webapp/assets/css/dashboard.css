@@ -1,0 +1,582 @@
+/* ============================================================
+   dashboard.css — Shared styles for Restaurant, Delivery, Admin dashboards
+   Requires style.css to be loaded first for design tokens.
+   ============================================================ */
+
+/* ── Dashboard Layout ── */
+.dashboard-page {
+    min-height: 100vh;
+    background: var(--color-surface-alt);
+    padding-top: var(--nav-height);
+}
+
+.dashboard-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+}
+
+/* ── Dashboard Header ── */
+.dashboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-header-left h1 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-header-left p {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.dashboard-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ── Stat Cards ── */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: box-shadow var(--transition-fast);
+}
+
+.stat-card:hover { box-shadow: var(--shadow-md); }
+
+.stat-card-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-card-value {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-secondary);
+    line-height: 1;
+}
+
+.stat-card-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Accent variants */
+.stat-card.primary .stat-card-value { color: var(--color-primary); }
+.stat-card.success .stat-card-value { color: var(--color-success); }
+.stat-card.info    .stat-card-value { color: var(--color-info); }
+
+/* ── Section Tabs ── */
+.dashboard-tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-border);
+    overflow-x: auto;
+    padding-bottom: 0;
+}
+
+.dashboard-tab {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.dashboard-tab:hover { color: var(--color-primary); }
+
+.dashboard-tab.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Dashboard Section Cards ── */
+.section-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.section-card-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.section-card-body { padding: 1.5rem; }
+
+/* ── Data Tables ── */
+.data-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 540px;
+}
+
+.data-table thead th {
+    text-align: left;
+    padding: 0.625rem 0.875rem;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--color-surface-alt);
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+}
+
+.data-table tbody td {
+    padding: 0.875rem 0.875rem;
+    border-bottom: 1px solid var(--color-border-light);
+    vertical-align: middle;
+    color: var(--color-text);
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover td { background: var(--color-primary-bg); }
+
+/* ── Status Badges ── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.badge-PLACED            { background: #dbeafe; color: #1d4ed8; }
+.badge-CONFIRMED         { background: #fef9c3; color: #854d0e; }
+.badge-PREPARING         { background: #ffedd5; color: #c2410c; }
+.badge-READY             { background: #d1fae5; color: #065f46; }
+.badge-OUT_FOR_DELIVERY  { background: #ede9fe; color: #5b21b6; }
+.badge-DELIVERED         { background: #dcfce7; color: #166534; }
+.badge-CANCELLED         { background: #fee2e2; color: #991b1b; }
+.badge-ASSIGNED          { background: #fef9c3; color: #854d0e; }
+.badge-PICKED_UP         { background: #ffedd5; color: #c2410c; }
+.badge-ACTIVE            { background: #d1fae5; color: #065f46; }
+.badge-INACTIVE          { background: #f1f5f9; color: #64748b; }
+.badge-CUSTOMER          { background: #dbeafe; color: #1d4ed8; }
+.badge-RESTAURANT        { background: #fef3c7; color: #92400e; }
+.badge-DELIVERY_PARTNER  { background: #ede9fe; color: #5b21b6; }
+.badge-ADMIN             { background: #fee2e2; color: #991b1b; }
+
+/* ── Menu Item Cards ── */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.menu-item-card {
+    background: white;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: box-shadow var(--transition-fast);
+}
+
+.menu-item-card:hover { box-shadow: var(--shadow-md); }
+
+.menu-item-card.unavailable { opacity: 0.65; }
+
+.menu-item-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-secondary);
+}
+
+.menu-item-desc {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.menu-item-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.menu-item-price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.menu-item-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ── Order Card (Dashboard) ── */
+.dash-order-card {
+    background: white;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: box-shadow var(--transition-fast);
+}
+
+.dash-order-card:hover { box-shadow: var(--shadow-md); }
+
+.dash-order-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.dash-order-id {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.dash-order-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.875rem;
+}
+
+.dash-order-actions {
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+    margin-top: 0.875rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* ── Delivery Cards ── */
+.delivery-card {
+    background: white;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: box-shadow var(--transition-fast);
+}
+
+.delivery-card:hover { box-shadow: var(--shadow-md); }
+
+.delivery-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.delivery-card-id {
+    font-weight: 700;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.delivery-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.delivery-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.delivery-info-label {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.delivery-card-actions {
+    padding: 0.875rem 1.25rem;
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-surface-alt);
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+}
+
+/* ── Restaurant Selector ── */
+.restaurant-selector {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.restaurant-selector select {
+    padding: 0.5rem 0.875rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--color-text);
+    background: white;
+    cursor: pointer;
+}
+
+.restaurant-selector select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* ── Modal ── */
+.dash-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+}
+
+.dash-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.dash-modal {
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform var(--transition-base);
+}
+
+.dash-modal-overlay.open .dash-modal { transform: translateY(0); }
+
+.dash-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.dash-modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.dash-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.dash-modal-body { padding: 1.5rem; }
+
+.dash-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--color-border-light);
+}
+
+/* ── Form in Modal ── */
+.modal-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.modal-form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.375rem;
+}
+
+.modal-form-group input,
+.modal-form-group select,
+.modal-form-group textarea {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--color-text);
+    background: white;
+    transition: border-color var(--transition-fast);
+}
+
+.modal-form-group input:focus,
+.modal-form-group select:focus,
+.modal-form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.modal-form-group textarea { resize: vertical; min-height: 80px; }
+
+.modal-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* ── Empty State ── */
+.dash-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--color-text-muted);
+}
+
+.dash-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.dash-empty h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.375rem;
+}
+
+.dash-empty p { font-size: 0.875rem; }
+
+/* ── Loading State ── */
+.dash-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+/* ── Inline Alert ── */
+.dash-alert {
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: none;
+    margin-bottom: 1rem;
+}
+
+.dash-alert.show { display: block; }
+.dash-alert.success { background: var(--color-success-bg); color: #008069; border: 1px solid rgba(0,184,148,0.2); }
+.dash-alert.error   { background: var(--color-error-bg);   color: var(--color-error); border: 1px solid rgba(214,48,49,0.2); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .dashboard-container { padding: 1.5rem 1rem 3rem; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .dashboard-header { gap: 0.75rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .modal-form-row { grid-template-columns: 1fr; }
+    .data-table { min-width: 380px; }
+}
+
+@media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .dashboard-tab { padding: 0.625rem 0.875rem; font-size: 0.8rem; }
+}

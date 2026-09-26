@@ -1,0 +1,824 @@
+/* ============================================================
+   customer.css — Restaurant Cards, Menu Cards, Cart Items
+   All customer-facing page styles.
+   ============================================================ */
+
+/* ──────────────────────────────────────────────
+   1. SEARCH / FILTER BAR
+   ────────────────────────────────────────────── */
+.search-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 240px;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 3rem;
+    font-size: 0.875rem;
+    background: white;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: var(--font-body);
+}
+
+.search-box input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-light);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.filter-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-chip {
+    padding: 0.4rem 1rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: white;
+    font-family: var(--font-body);
+}
+
+.filter-chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.filter-chip.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+/* ──────────────────────────────────────────────
+   2. RESTAURANT CARDS GRID
+   ────────────────────────────────────────────── */
+.restaurants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ── Restaurant Card ── */
+.restaurant-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-border-light);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.restaurant-card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+}
+
+.restaurant-card-image {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FFE8DC, #FFDCC8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.restaurant-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.restaurant-card:hover .restaurant-card-image img {
+    transform: scale(1.05);
+}
+
+.restaurant-card-status {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+}
+
+.restaurant-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.restaurant-card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.restaurant-card-cuisine {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.restaurant-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.restaurant-card-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.restaurant-card-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.restaurant-card-address {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.view-menu-btn {
+    padding: 0.4rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.view-menu-btn:hover {
+    background: var(--color-primary-dark);
+    transform: scale(1.04);
+}
+
+/* ── Skeleton Restaurant Card ── */
+.restaurant-card-skeleton {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-border-light);
+}
+
+.skeleton-restaurant-img {
+    height: 200px;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e8eaed 50%, #f0f2f5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.skeleton-restaurant-body {
+    padding: 1.25rem;
+}
+
+.skeleton-line {
+    height: 14px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(90deg, #f0f2f5 25%, #e8eaed 50%, #f0f2f5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.skeleton-line.title  { width: 70%; height: 18px; }
+.skeleton-line.medium { width: 55%; }
+.skeleton-line.short  { width: 40%; }
+
+/* ──────────────────────────────────────────────
+   3. MENU PAGE
+   ────────────────────────────────────────────── */
+.menu-page-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ── Restaurant Info Header (Menu Page) ── */
+.restaurant-info-banner {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-border-light);
+}
+
+.restaurant-info-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #FFE8DC, #FFDCC8);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    flex-shrink: 0;
+}
+
+.restaurant-info-details h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.restaurant-info-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    flex-wrap: wrap;
+}
+
+.restaurant-info-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* ── Category Filter ── */
+.menu-categories {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* ── Menu Items Grid ── */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* ── Menu Item Card ── */
+.menu-item-card {
+    background: white;
+    border-radius: 0.875rem;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    border: 1px solid var(--color-border-light);
+    transition: all 0.2s ease;
+}
+
+.menu-item-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
+    border-color: rgba(255,107,53,0.2);
+}
+
+.menu-item-image {
+    width: 90px;
+    height: 90px;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #FFF4EE, #FFE8DC);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.menu-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.menu-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-item-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-item-description {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.menu-item-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.menu-item-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.menu-item-category-tag {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    background: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    border-radius: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.menu-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.add-to-cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: var(--font-body);
+    box-shadow: 0 3px 10px rgba(255,107,53,0.25);
+    white-space: nowrap;
+}
+
+.add-to-cart-btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(255,107,53,0.35);
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+}
+
+.add-to-cart-btn.added {
+    background: var(--color-success);
+    box-shadow: 0 3px 10px rgba(0,184,148,0.25);
+}
+
+/* ── Sticky Cart Summary Panel (Menu Page Sidebar) ── */
+.cart-summary-panel {
+    position: sticky;
+    top: calc(var(--nav-height) + 1.5rem);
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid var(--color-border-light);
+}
+
+.cart-summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.cart-summary-header h3 {
+    font-size: 1.1rem;
+}
+
+.cart-summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.cart-summary-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.cart-summary-item-name {
+    flex: 1;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-summary-item-qty {
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.cart-summary-item-price {
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.cart-summary-total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.cart-summary-total .total-amount {
+    color: var(--color-primary);
+    font-size: 1.3rem;
+}
+
+.cart-summary-empty {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+}
+
+.cart-summary-empty .empty-cart-icon {
+    font-size: 2.5rem;
+    opacity: 0.4;
+    margin-bottom: 0.75rem;
+}
+
+/* ──────────────────────────────────────────────
+   4. CART PAGE
+   ────────────────────────────────────────────── */
+.cart-page-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ── Cart Item Row ── */
+.cart-items-container {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+}
+
+.cart-items-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    background: var(--color-surface-alt);
+}
+
+.cart-items-header h2 {
+    font-size: 1.1rem;
+}
+
+.cart-restaurant-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.cart-item-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    transition: background 0.15s ease;
+}
+
+.cart-item-row:last-child {
+    border-bottom: none;
+}
+
+.cart-item-row:hover {
+    background: var(--color-surface-alt);
+}
+
+.cart-item-info {
+    min-width: 0;
+}
+
+.cart-item-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-unit-price {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.cart-item-subtotal {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.cart-item-remove-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-error-bg);
+    color: var(--color-error);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.cart-item-remove-btn:hover {
+    background: var(--color-error);
+    color: white;
+}
+
+/* ── Cart Order Summary ── */
+.cart-order-summary {
+    position: sticky;
+    top: calc(var(--nav-height) + 1.5rem);
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid var(--color-border-light);
+}
+
+.order-summary-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.order-summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    padding: 0.5rem 0;
+    color: var(--color-text-muted);
+}
+
+.order-summary-line.total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-border);
+}
+
+.order-summary-line.total .amount {
+    color: var(--color-primary);
+    font-size: 1.3rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 0.875rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1.25rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(255,107,53,0.3);
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.checkout-btn:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+    transform: translateY(-1px);
+}
+
+.checkout-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.continue-shopping-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.continue-shopping-link:hover {
+    color: var(--color-primary);
+}
+
+/* ── Empty Cart ── */
+.cart-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.cart-empty-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.35;
+    animation: float 3s ease-in-out infinite;
+}
+
+.cart-empty h2 {
+    font-size: 1.5rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.cart-empty p {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-bottom: 2rem;
+    max-width: 280px;
+}
+
+/* ──────────────────────────────────────────────
+   5. RESPONSIVE
+   ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+    .menu-page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary-panel {
+        position: static;
+        display: none; /* hidden on mobile — use cart page instead */
+    }
+}
+
+@media (max-width: 900px) {
+    .cart-page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-order-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .restaurants-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-item-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .menu-item-image {
+        width: 100%;
+        height: 120px;
+        border-radius: 0.75rem;
+    }
+
+    .menu-item-details {
+        text-align: center;
+    }
+
+    .menu-item-footer {
+        justify-content: center;
+    }
+
+    .menu-item-actions {
+        flex-direction: column;
+    }
+
+    .cart-item-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}

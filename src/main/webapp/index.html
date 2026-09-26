@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodieExpress — Delicious Food Delivered Fast</title>
+    <meta name="description" content="Order food from your favourite restaurants with FoodieExpress. Fast delivery, great food, amazing prices.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        /* ── Hero Section ── */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #FF6B35 0%, #E55A26 50%, #C0392B 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+            top: -200px; right: -200px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 50%;
+            bottom: -150px; left: -150px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 640px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            color: white;
+            line-height: 1.05;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 .highlight {
+            color: #FFE0A3;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.88);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: white;
+            color: #FF6B35;
+            border-radius: 0.875rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .hero-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+        }
+
+        .hero-cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 0.875rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1.5px solid rgba(255,255,255,0.35);
+            transition: all 0.2s ease;
+        }
+
+        .hero-cta-secondary:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .hero-stat-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.25rem;
+        }
+
+        .hero-illustration {
+            position: absolute;
+            right: 5%;
+            bottom: -5%;
+            font-size: 14rem;
+            opacity: 0.15;
+            animation: float 4s ease-in-out infinite;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50%       { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* ── How It Works ── */
+        .how-it-works {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .how-it-works .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            position: relative;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: var(--color-primary-bg);
+            color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0 auto 1.25rem;
+            border: 2px solid rgba(255,107,53,0.2);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* ── Features ── */
+        .features {
+            padding: 5rem 0;
+            background: var(--color-bg);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--color-primary-bg);
+            border-radius: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-secondary);
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* ── CTA Banner ── */
+        .cta-banner {
+            background: linear-gradient(135deg, #2D3436, #1a1f21);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-banner h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.25rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .cta-banner p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .cta-banner-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero-stats { gap: 1.5rem; }
+            .hero-stat-value { font-size: 1.5rem; }
+            .hero-illustration { display: none; }
+            .cta-banner h2 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav class="navbar" id="main-navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="index.html" aria-label="FoodieExpress Home">
+            <span class="logo-icon" aria-hidden="true">🍕</span>
+            FoodieExpress
+        </a>
+
+        <ul class="nav-links" role="list">
+            <li><a class="nav-link active" href="index.html">Home</a></li>
+            <li><a class="nav-link" href="pages/restaurants.html">Restaurants</a></li>
+            <li><a class="nav-link" href="pages/register.html">Sign Up</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a class="btn btn-outline btn-sm" href="pages/login.html" id="nav-login-btn">Login</a>
+            <a class="btn btn-primary btn-sm" href="pages/register.html" id="nav-register-btn">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero page-content" aria-label="Hero section">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                🚀 Fast &amp; Fresh Delivery
+            </div>
+
+            <h1>
+                Hungry? We've Got<br>
+                You <span class="highlight">Covered.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Discover hundreds of restaurants, order your favourites, and get
+                fresh food delivered right to your door — fast.
+            </p>
+
+            <div class="hero-cta-group">
+                <a class="hero-cta-primary" href="pages/register.html" id="hero-get-started">
+                    🍔 Order Now
+                </a>
+                <a class="hero-cta-secondary" href="pages/login.html" id="hero-login">
+                    👤 Login
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-value">500+</div>
+                    <div class="hero-stat-label">Restaurants</div>
+                </div>
+                <div>
+                    <div class="hero-stat-value">30 min</div>
+                    <div class="hero-stat-label">Avg. Delivery</div>
+                </div>
+                <div>
+                    <div class="hero-stat-value">10K+</div>
+                    <div class="hero-stat-label">Happy Customers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-illustration" aria-hidden="true">🍕</div>
+</section>
+
+<!-- ── How It Works ── -->
+<section class="how-it-works" aria-label="How it works">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Get your food in 3 simple steps</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">📍</div>
+                <div class="step-title">Choose a Restaurant</div>
+                <p class="step-desc">Browse hundreds of top-rated local restaurants and find your favourite cuisine.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">🛒</div>
+                <div class="step-title">Pick Your Items</div>
+                <p class="step-desc">Select dishes, customise your order, and add them to your cart with one click.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">🏍️</div>
+                <div class="step-title">Fast Delivery</div>
+                <p class="step-desc">Our delivery partners bring your food to you hot and fresh, in under 30 minutes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Features ── -->
+<section class="features" aria-label="Features">
+    <div class="container">
+        <div class="section-header text-center" style="text-align:center; margin-bottom:3rem;">
+            <h2 class="section-title">Why FoodieExpress?</h2>
+            <p class="section-subtitle">We make food delivery simple, reliable, and delicious</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Lightning Fast</div>
+                <p class="feature-desc">We connect you with the nearest restaurants for the fastest possible delivery time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Secure Payments</div>
+                <p class="feature-desc">Your payment details are always safe and secure with our encrypted payment system.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">Live Tracking</div>
+                <p class="feature-desc">Track your order in real-time from the restaurant kitchen to your doorstep.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <div class="feature-title">Ratings & Reviews</div>
+                <p class="feature-desc">Read honest reviews from real customers to make the best choice every time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Personalised</div>
+                <p class="feature-desc">Discover restaurants based on your preferences, cuisine type, and past orders.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <div class="feature-title">Partner Restaurants</div>
+                <p class="feature-desc">Join as a restaurant partner and reach thousands of hungry customers instantly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA Banner ── -->
+<section class="cta-banner" aria-label="Call to action">
+    <div class="container">
+        <h2>Ready to Order? 🍕</h2>
+        <p>Join thousands of happy customers already using FoodieExpress.</p>
+        <div class="cta-banner-btns">
+            <a class="hero-cta-primary" href="pages/register.html">Create Account</a>
+            <a href="pages/login.html" style="display:inline-flex; align-items:center; gap:0.5rem; padding:1rem 2rem; border:1.5px solid rgba(255,255,255,0.35); color:white; border-radius:0.875rem; font-size:1rem; font-weight:600; transition:all 0.2s ease; text-decoration:none;">
+                Already a member? Login
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer" role="contentinfo">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a class="nav-logo" href="index.html" style="margin-bottom:1rem; display:inline-flex;">
+                    <span class="logo-icon">🍕</span> FoodieExpress
+                </a>
+                <p>Bringing your favourite restaurants to your doorstep. Fast, fresh, and reliable food delivery.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>For Customers</h4>
+                <ul>
+                    <li><a href="pages/restaurants.html">Browse Restaurants</a></li>
+                    <li><a href="pages/register.html">Create Account</a></li>
+                    <li><a href="pages/login.html">Login</a></li>
+                    <li><a href="pages/orders.html">My Orders</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Partners</h4>
+                <ul>
+                    <li><a href="pages/register.html">Register Restaurant</a></li>
+                    <li><a href="pages/register.html">Become a Driver</a></li>
+                    <li><a href="#">Partner Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2024 FoodieExpress. All rights reserved.</span>
+            <span>Built with ❤️ for great food lovers</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="assets/js/api.js"></script>
+<script>
+    // Redirect logged-in users to their dashboard
+    document.addEventListener('DOMContentLoaded', () => {
+        // Scroll shadow on nav
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // If already logged in, update nav to show logged-in state
+        const user = Session.get();
+        if (user) {
+            const loginBtn    = document.getElementById('nav-login-btn');
+            const registerBtn = document.getElementById('nav-register-btn');
+            if (loginBtn)    loginBtn.textContent    = user.name;
+            if (loginBtn)    loginBtn.href           = '#';
+            if (registerBtn) registerBtn.textContent = 'Go to App';
+            if (registerBtn) registerBtn.href        = CONTEXT + '/pages/restaurants.html';
+
+            // Hero CTAs
+            const heroStart = document.getElementById('hero-get-started');
+            const heroLogin = document.getElementById('hero-login');
+            if (heroStart) { heroStart.textContent = '🍽️ Browse Restaurants'; heroStart.href = 'pages/restaurants.html'; }
+            if (heroLogin) { heroLogin.style.display = 'none'; }
+        }
+    });
+</script>
+</body>
+</html>

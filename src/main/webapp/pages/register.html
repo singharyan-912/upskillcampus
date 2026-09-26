@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account — FoodieExpress</title>
+    <meta name="description" content="Create your FoodieExpress account and start ordering from your favourite restaurants.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+    <!-- ── Left Hero Panel ── -->
+    <div class="auth-hero" aria-hidden="true">
+        <div class="auth-hero-content">
+            <div class="auth-hero-icon">🍕</div>
+            <h1>Join FoodieExpress</h1>
+            <p>Create your free account and start ordering from hundreds of top-rated restaurants.</p>
+
+            <div class="auth-hero-features">
+                <div class="auth-hero-feature">
+                    <div class="feature-dot"></div>
+                    <span>Order from 500+ restaurants</span>
+                </div>
+                <div class="auth-hero-feature">
+                    <div class="feature-dot"></div>
+                    <span>Fast 30-minute delivery</span>
+                </div>
+                <div class="auth-hero-feature">
+                    <div class="feature-dot"></div>
+                    <span>Track your order live</span>
+                </div>
+                <div class="auth-hero-feature">
+                    <div class="feature-dot"></div>
+                    <span>Rate and review your experience</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Right Form Panel ── -->
+    <div class="auth-form-panel">
+        <div class="auth-form-container">
+
+            <a class="auth-back-link" href="../index.html" aria-label="Back to home">
+                ← Back to Home
+            </a>
+
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Fill in the details below to get started.</p>
+            </div>
+
+            <!-- Message (hidden initially) -->
+            <div id="register-message" class="auth-message" style="display:none;" role="alert" aria-live="polite"></div>
+
+            <form id="register-form" class="auth-form" novalidate autocomplete="off" aria-label="Registration form">
+
+                <!-- Name + Phone row -->
+                <div class="auth-form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="reg-name">Full Name <span style="color:var(--color-error)">*</span></label>
+                        <div class="input-wrapper">
+                            <span class="input-icon" aria-hidden="true">👤</span>
+                            <input class="form-input" type="text" id="reg-name" name="name"
+                                   placeholder="John Doe"
+                                   autocomplete="name"
+                                   aria-required="true"
+                                   aria-describedby="name-hint">
+                        </div>
+                        <span id="name-hint" class="form-hint">Your full name</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="reg-phone">Phone</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon" aria-hidden="true">📞</span>
+                            <input class="form-input" type="tel" id="reg-phone" name="phone"
+                                   placeholder="+91 98765 43210"
+                                   autocomplete="tel">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label" for="reg-email">Email Address <span style="color:var(--color-error)">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon" aria-hidden="true">✉️</span>
+                        <input class="form-input" type="email" id="reg-email" name="email"
+                               placeholder="you@example.com"
+                               autocomplete="email"
+                               aria-required="true">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label" for="reg-password">Password <span style="color:var(--color-error)">*</span></label>
+                    <div class="input-wrapper">
+                        <span class="input-icon" aria-hidden="true">🔒</span>
+                        <input class="form-input" type="password" id="reg-password" name="password"
+                               placeholder="Min. 6 characters"
+                               autocomplete="new-password"
+                               aria-required="true"
+                               aria-describedby="pw-hint">
+                        <span class="input-icon-right password-toggle" id="toggle-reg-password"
+                              role="button" tabindex="0" aria-label="Toggle password visibility"
+                              title="Show/hide password">👁️</span>
+                    </div>
+                    <span id="pw-hint" class="form-hint">At least 6 characters</span>
+                </div>
+
+                <!-- Role Selector -->
+                <div class="form-group">
+                    <label class="form-label">I am a… <span style="color:var(--color-error)">*</span></label>
+                    <div class="role-grid" role="radiogroup" aria-label="Select your role">
+
+                        <div class="role-option">
+                            <input type="radio" name="role" id="role-customer" value="CUSTOMER" checked>
+                            <label class="role-label" for="role-customer">
+                                <span class="role-icon" aria-hidden="true">🛒</span>
+                                <span class="role-name">Customer</span>
+                            </label>
+                        </div>
+
+                        <div class="role-option">
+                            <input type="radio" name="role" id="role-restaurant" value="RESTAURANT">
+                            <label class="role-label" for="role-restaurant">
+                                <span class="role-icon" aria-hidden="true">🍳</span>
+                                <span class="role-name">Restaurant</span>
+                            </label>
+                        </div>
+
+                        <div class="role-option">
+                            <input type="radio" name="role" id="role-delivery" value="DELIVERY_PARTNER">
+                            <label class="role-label" for="role-delivery">
+                                <span class="role-icon" aria-hidden="true">🏍️</span>
+                                <span class="role-name">Delivery Partner</span>
+                            </label>
+                        </div>
+
+                        <div class="role-option">
+                            <input type="radio" name="role" id="role-admin" value="ADMIN">
+                            <label class="role-label" for="role-admin">
+                                <span class="role-icon" aria-hidden="true">🔑</span>
+                                <span class="role-name">Admin</span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="auth-submit-btn" id="register-btn" aria-label="Create account">
+                    <span>Create Account 🚀</span>
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+                Already have an account?
+                <a href="login.html">Login here</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast container -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/auth.js"></script>
+</body>
+</html>

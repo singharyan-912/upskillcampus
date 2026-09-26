@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders — FoodieExpress</title>
+    <meta name="description" content="Track and review all your food orders.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/customer.css">
+
+    <style>
+        /* ── Order Card ── */
+        .order-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border-light);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+        .order-card:hover { box-shadow: var(--shadow-md); }
+
+        .order-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .order-card-left { display: flex; flex-direction: column; gap: 0.25rem; }
+        .order-card-id {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+        }
+        .order-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        .order-card-meta span { display: flex; align-items: center; gap: 0.25rem; }
+        .order-card-right { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .order-total-badge {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* ── Status Badges ── */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+        .status-PLACED            { background:#dbeafe; color:#1d4ed8; }
+        .status-CONFIRMED         { background:#fef9c3; color:#854d0e; }
+        .status-PREPARING         { background:#ffedd5; color:#c2410c; }
+        .status-READY             { background:#d1fae5; color:#065f46; }
+        .status-OUT_FOR_DELIVERY  { background:#ede9fe; color:#5b21b6; }
+        .status-DELIVERED         { background:#dcfce7; color:#166534; }
+        .status-CANCELLED         { background:#fee2e2; color:#991b1b; }
+
+        /* ── Payment Status ── */
+        .pay-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.625rem;
+            border-radius: 1rem;
+        }
+        .pay-SUCCESS { background:#dcfce7; color:#166534; }
+        .pay-PENDING { background:#fef9c3; color:#854d0e; }
+        .pay-FAILED  { background:#fee2e2; color:#991b1b; }
+        .pay-NONE    { background:#f1f5f9; color:#64748b; }
+
+        /* ── Order Card Actions ── */
+        .order-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            border-top: 1px solid var(--color-border-light);
+            background: var(--color-surface-alt);
+            flex-wrap: wrap;
+        }
+
+        /* ── Expandable Details Panel ── */
+        .order-details-panel {
+            display: none;
+            border-top: 1px solid var(--color-border-light);
+            padding: 1.5rem;
+            background: var(--color-bg);
+        }
+        .order-details-panel.open { display: block; }
+
+        .order-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .detail-section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .detail-value {
+            font-size: 0.9rem;
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Items in details */
+        .items-mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .items-mini-table thead th {
+            text-align: left;
+            padding: 0.4rem 0.5rem;
+            color: var(--color-text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .items-mini-table tbody td {
+            padding: 0.625rem 0.5rem;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .items-mini-table tbody tr:last-child td { border-bottom: none; }
+        .items-mini-table .item-subtotal { color: var(--color-primary); font-weight: 600; }
+
+        /* ── Review Form ── */
+        .review-form-wrap {
+            display: none;
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 0.875rem;
+            padding: 1.5rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: var(--shadow-sm);
+        }
+        .review-form-wrap.open { display: block; }
+        .review-form-wrap h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--color-secondary);
+        }
+
+        /* Star Rating */
+        .star-rating {
+            display: flex;
+            gap: 0.375rem;
+            margin-bottom: 1.25rem;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        .star-rating input { display: none; }
+        .star-rating label {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #d1d5db;
+            transition: color 0.1s;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #f59e0b;
+        }
+
+        .review-submit-btn {
+            padding: 0.625rem 1.5rem;
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 0.625rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.15s ease;
+        }
+        .review-submit-btn:hover { background: var(--color-primary-dark); }
+        .review-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .review-result {
+            margin-top: 0.875rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 0.625rem;
+            display: none;
+        }
+        .review-result.success {
+            background: var(--color-success-bg);
+            color: #008069;
+            display: block;
+        }
+        .review-result.error {
+            background: var(--color-error-bg);
+            color: var(--color-error);
+            display: block;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 700px) {
+            .order-details-grid { grid-template-columns: 1fr; }
+            .order-card-right   { justify-content: space-between; width: 100%; }
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<!-- ── Navigation ── -->
+<nav class="navbar" id="main-navbar">
+    <div class="container nav-inner">
+        <a class="nav-logo" href="../index.html"><span class="logo-icon">🍕</span> FoodieExpress</a>
+        <ul class="nav-links">
+            <li><a class="nav-link" href="../index.html">Home</a></li>
+            <li><a class="nav-link" href="restaurants.html">Restaurants</a></li>
+            <li><a class="nav-link active" href="orders.html">My Orders</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="nav-icon-link" aria-label="Cart">
+                🛒 <span class="nav-badge" id="nav-cart-count" style="display:none;">0</span>
+            </a>
+            <div class="nav-user" style="display:flex; align-items:center; gap:0.5rem; margin-left:1rem;">
+                <div class="nav-avatar" id="nav-avatar">U</div>
+                <span id="nav-user-name">User</span>
+                <button class="btn btn-outline btn-sm" id="nav-logout-btn"
+                        style="display:none; padding:0.25rem 0.5rem; font-size:0.75rem; margin-left:0.5rem;">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Page ── -->
+<main class="page-content container" style="padding-top: calc(var(--nav-height) + 2rem); max-width: 860px;">
+
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+            <h1 class="page-title">My Orders</h1>
+            <p class="page-subtitle">All your orders, newest first.</p>
+        </div>
+        <a href="restaurants.html" class="btn btn-outline" style="display:flex; align-items:center; gap:0.5rem;">
+            🍕 Order More
+        </a>
+    </div>
+
+    <!-- Orders List -->
+    <div id="orders-list">
+        <!-- Skeleton while loading -->
+        <div class="empty-state" id="orders-loading">
+            <div class="empty-state-icon" style="animation:float 2s ease-in-out infinite;">📦</div>
+            <h3>Loading your orders...</h3>
+        </div>
+    </div>
+
+</main>
+
+<!-- Toast -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/orders.js"></script>
+</body>
+</html>
